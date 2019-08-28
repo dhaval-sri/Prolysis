@@ -12,7 +12,7 @@ export class CandidateService {
 
   constructor(private httpClient: HttpClient) { }
 
-  getCandidateInfo(): Observable<ServerResponse> {
-    return this.httpClient.get<ServerResponse>((this.baseURL + '/profile'));
+  getCandidateInfo(uID: number, cID: number): Observable<ServerResponse> {
+    return this.httpClient.get<ServerResponse>((this.baseURL + '/Scene1/' + cID + '/' + uID));
   }
 }
