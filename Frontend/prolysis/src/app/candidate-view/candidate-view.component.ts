@@ -1,10 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { Candidate } from '../candidates';
 import { ChartOptions, ChartDataSets } from 'chart.js';
 import { Label } from 'ng2-charts';
 import { ServerResponse } from '../response';
 import regression from 'regression';
+import { CandidateService } from '../candidate.service';
 
 interface Problem {
   pID: number;
@@ -21,31 +22,32 @@ interface Problem {
 })
 export class CandidateViewComponent implements OnInit {
 
-  constructor(private route: ActivatedRoute, private router: Router) { }
+  constructor(private route: ActivatedRoute, private cService: CandidateService) { }
 
-  candidate: Candidate = { name: null, id: null, email: null };
+  candidate: Candidate = { uName: null, uID: null, uEmail: null };
 
-  serverResponse: ServerResponse =
-    {
-      uName: 'Dhaval', contestID: 1, uID: 12, uEmail: 'dhaval@teksystems.com',
-      data: [
-        {
-          pID: 1, x: 'Attempts', y: 'Execution Time', data: [[5, 2, 3, -1], [2, 2, 1, 3], [1, 1, 1, 1]]
-        },
-        {
-          pID: 2, x: 'Attempts', y: 'Execution Time', data: [[6, 4, 3, 2], [1, 0, 0.8, 1.6]]
-        }, {
-          pID: 3, x: 'Attempts', y: 'Execution Time', data: [[10, 8, 3, -1], [6, 2, 1, 3], [2, 1, 1, 3]]
-        },
-        {
-          pID: 5, x: 'Attempts', y: 'Execution Time', data: [[1, 1, 1, 1], [2, 2, 1, 3], [5, 2, 3, -1]]
-        },
-        {
-          pID: 6, x: 'Attempts', y: 'Execution Time', data: [[1, 0, 0.8, 1.6], [6, 4, 3, 2]]
-        }
-      ]
-    };
-
+  // serverResponse: ServerResponse =
+  //   {
+  //     uName: 'Dhaval', contestID: 1, uID: 12, uEmail: 'dhaval@teksystems.com',
+  //     data: [
+  //       {
+  //         pID: 1, x: 'Attempts', y: 'Execution Time', data: [[5, 2, 3, -1], [2, 2, 1, 3], [1, 1, 1, 1]]
+  //       },
+  //       {
+  //         pID: 2, x: 'Attempts', y: 'Execution Time', data: [[6, 4, 3, 2], [1, 0, 0.8, 1.6]]
+  //       }, {
+  //         pID: 3, x: 'Attempts', y: 'Execution Time', data: [[10, 8, 3, -1], [6, 2, 1, 3], [2, 1, 1, 3]]
+  //       },
+  //       {
+  //         pID: 5, x: 'Attempts', y: 'Execution Time', data: [[1, 1, 1, 1], [2, 2, 1, 3], [5, 2, 3, -1]]
+  //       },
+  //       {
+  //         pID: 6, x: 'Attempts', y: 'Execution Time', data: [[1, 0, 0.8, 1.6], [6, 4, 3, 2]]
+  //       }
+  //     ]
+  //   };
+  serverResponse: ServerResponse;
+  loading = true;
   problemsArray: Problem[] = [];
   lineChartData: ChartDataSets[][] = [];
   pointsArray: number[][][] = [];
@@ -133,11 +135,18 @@ export class CandidateViewComponent implements OnInit {
   }
 
   fetchCandiDetails(id: number) {
-    // fetch into serverResponse
-    this.candidate = { name: 'Dhaval', id, email: 'dhaval@tek.com' };
-    this.candidate = { name: this.serverResponse.uName, id, email: this.serverResponse.uEmail };
-    this.setChartData();
-    this.setChartOptions();
+    this.cService.getCandidateInfo().subscribe((data) => {
+      this.serverResponse = data;
+      // this.candidate = { name: 'Dhaval', id, email: 'dhaval@tek.com' };
+      this.candidate = { uName: this.serverResponse.uName, uID: id, uEmail: this.serverResponse.uEmail };
+      this.setChartData();
+      this.setChartOptions();
+      this.populateProblemArray();
+      this.setLabelArray();
+      this.setRegressionLines();
+      this.genArray();
+      this.loading = false;
+    });
   }
 
   getCoordinates(data: number[][]) {
@@ -192,11 +201,7 @@ export class CandidateViewComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.candidate.id = +this.route.snapshot.paramMap.get('uid');
-    this.fetchCandiDetails(this.candidate.id);
-    this.populateProblemArray();
-    this.setLabelArray();
-    this.setRegressionLines();
-    this.genArray();
+    this.candidate.uID = +this.route.snapshot.paramMap.get('uid');
+    this.fetchCandiDetails(this.candidate.uID);
   }
 }

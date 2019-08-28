@@ -1,12 +1,18 @@
-<div class="body-container">
+<div class="spinner-div" *ngIf="loading">
+  <div class="m-auto">
+    <mat-spinner>
+    </mat-spinner>
+  </div>
+</div>
+<div class="body-container" *ngIf="!loading">
   <mat-card>
     <mat-card-content>
       <div class="head">
         <ngx-avatar [name]="candidate.name" size="125" class="mx-auto"></ngx-avatar>
         <div class="detailCandi mx-2 my-2">
-          <h2 align="center">{{candidate.name}}</h2>
-          <h3 align="center">ID: {{candidate.id}}</h3>
-          <h4 align="center">{{candidate.email}}</h4>
+          <h2 align="center">{{candidate.uName}}</h2>
+          <h3 align="center">ID: {{candidate.uID}}</h3>
+          <h4 align="center">{{candidate.uEmail}}</h4>
         </div>
       </div>
       <div class="mt-5 mb-md-5 mb-sm-2 px-md-5 px-sm-2 d-flex flex-wrap justify-content-around">
@@ -17,7 +23,7 @@
             </div>
             <p class="d-flex" style="font-size: 1rem;padding-left: 10px;">{{prob.passT}}/{{prob.totalT}} Test Cases
               <br>
-              No. of attempts: {{[prob.attempts]}}
+              No. of attempts: {{prob.attempts}}
             </p>
           </div>
         </div>

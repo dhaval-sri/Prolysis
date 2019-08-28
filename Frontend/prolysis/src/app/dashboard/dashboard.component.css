@@ -84,3 +84,7 @@
         top: 54px;
     }
 }
+
+a:hover {
+    text-decoration: none !important;
+}

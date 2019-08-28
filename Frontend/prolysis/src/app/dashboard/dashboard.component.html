@@ -3,25 +3,14 @@
       <mat-spinner>
       </mat-spinner>
   </div>
-  <!-- <div class="inner-spinner-div" *ngIf="showRetry">
-      <div style="display:flex; flex-direction: column;">
-          <mat-icon style="font-size: 20vh; color: #FBC02D; height: auto; width: auto;">warning</mat-icon>
-          <p align="center">
-              INTERNAL ERROR
-          </p>
-          <div style="margin:auto">
-              <button mat-raised-button (click)="mainFunction(myControl.value.id)">RETRY</button>
-          </div>
-      </div>
-  </div> -->
 </div>
 <div class="main-container" *ngIf="!(loading||refreshing)">
   <div class="header-container alternative">
-      <h1 class="mat-h1">View</h1>
+      <h1 class="mat-h1">Welcome, {{userName}}!</h1>
       <div class="searchBar">
           <form class="fullwidthForm">
               <mat-form-field appearance="outline" style="width: 100%;">
-                  <mat-label>Select Contest</mat-label>
+                  <mat-label>Kindly select a Contest</mat-label>
                   <mat-icon matPrefix>search</mat-icon>
                   <input type="text" placeholder="Search" matInput [formControl]="myControl" [matAutocomplete]="auto">
                   <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete" [displayWith]="displayFn">
@@ -35,16 +24,16 @@
       </div>
   </div>
   <div class="intersection-container">
-    <a  *ngFor="let candi of candidatesList" [routerLink]="[ '/contest', myControl.value.id, 'candidate', candi.id ]">
+    <a *ngFor="let candi of candidatesList" [routerLink]="[ '/contest', myControl.value.id, 'candidate', candi.uID ]">
       <mat-card>
           <mat-card-header>
-              <div mat-card-avatar><ngx-avatar [name]="candi.name" size="50"></ngx-avatar></div>
-              <mat-card-title>{{candi.name}}</mat-card-title>
+              <div mat-card-avatar><ngx-avatar [name]="candi.uName" size="50"></ngx-avatar></div>
+              <mat-card-title>{{candi.uName}}</mat-card-title>
           </mat-card-header>
-          <mat-card-content>
-              {{candi.id}}
+          <mat-card-content class="text-right">
+              {{candi.uID}}
           </mat-card-content>
       </mat-card>
-      </a>
+    </a>
   </div>
 </div>

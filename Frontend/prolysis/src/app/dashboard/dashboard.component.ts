@@ -5,6 +5,7 @@ import { Observable } from 'rxjs';
 import { startWith, map } from 'rxjs/operators';
 import { Candidate } from '../candidates';
 import { ActivatedRoute, Router } from '@angular/router';
+import { DashboardService } from '../dashboard.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -13,7 +14,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 })
 export class DashboardComponent implements OnInit {
 
-  constructor(private route: ActivatedRoute, private router: Router) { }
+  constructor(private route: ActivatedRoute, private router: Router, private dashboardService: DashboardService) { }
 
   refreshing = false;
   loading = false;
@@ -22,6 +23,7 @@ export class DashboardComponent implements OnInit {
   contestList: Contest[] = [];
   candidatesList: Candidate[] = [];
   currentContestid: number;
+  userName: string;
 
   private _filter(name: string): Contest[] {
     const filterValue = name.toLowerCase();
@@ -29,29 +31,27 @@ export class DashboardComponent implements OnInit {
   }
 
   ngOnInit() {
+    localStorage.setItem('userName', 'Admin');
+    this.userName = localStorage.getItem('userName');
     this.currentContestid = +this.route.snapshot.paramMap.get('id');
-    this.filteredOptions = this.myControl.valueChanges
-      .pipe(
-        startWith<string | Contest>(''),
-        map(value => typeof value === 'string' ? value : value.name),
-        map(name => name ? this._filter(name) : this.contestList.slice())
-      );
-    this.contestList.push({ name: 'Contest 1', id: 1 });
-    this.contestList.push({ name: 'Contest 2', id: 2 });
-    // this.myControl.disable();
-    // this.fetchJnc.getLocations().subscribe(data => {
-    //   data.forEach((i) => this.intersectionList.push({ name: i.name, id: i.JID }));
-
-    this.myControl.enable();
-    // this.myControl.setValue({ name: 'Contest 1', id: 1 });
-    //   this.myControl.setValue({ name: data.filter(inter => inter.JID === this.id)[0].name, id: this.id });
-    // });
-    if (this.currentContestid !== 0) {
-      this.myControl.setValue(
-        { name: this.contestList.filter(conti => conti.id === this.currentContestid)[0].name, id: this.currentContestid }
-      );
-      this.mainFunction(this.currentContestid);
-    }
+    this.dashboardService.getContests().subscribe((contestArray) => {
+      for (const contest of contestArray) {
+        this.contestList.push({ name: contest.name, id: contest.id });
+      }
+      this.filteredOptions = this.myControl.valueChanges
+        .pipe(
+          startWith<string | Contest>(''),
+          map(value => typeof value === 'string' ? value : value.name),
+          map(name => name ? this._filter(name) : this.contestList.slice())
+        );
+      this.myControl.enable();
+      if (this.currentContestid !== 0) {
+        this.myControl.setValue(
+          { name: this.contestList.filter(conti => conti.id === this.currentContestid)[0].name, id: this.currentContestid }
+        );
+        this.mainFunction(this.currentContestid);
+      }
+    });
   }
 
   displayFn(cont: Contest): string | undefined {
@@ -60,8 +60,10 @@ export class DashboardComponent implements OnInit {
 
   fetchCandidates(id: number) {
     // fetch for particular contestID
-    this.candidatesList = [{ name: 'Dhaval', id: 1 }, { name: 'Bharat', id: 2 }, { name: 'Inderdeep', id: 3 }];
-    this.loading = false;
+    this.dashboardService.getContestants(id).subscribe((data) => {
+      this.candidatesList = data;
+      this.loading = false;
+    });
   }
 
   mainFunction(id: number) {

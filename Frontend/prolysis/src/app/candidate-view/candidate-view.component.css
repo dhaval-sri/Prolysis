@@ -36,3 +36,12 @@
     justify-content: space-evenly;
     flex-wrap: wrap;
 }
+
+.spinner-div {
+    position: absolute;
+    top: 64px;
+    bottom: 0;
+    width: 100%;
+    display: flex;
+    flex: 1;
+}
