@@ -1,0 +1,48 @@
+<mat-sidenav-container class="sidenav-container">
+  <mat-sidenav #drawer class="sidenav" fixedInViewport="true"
+    [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'" [mode]="(isHandset$ | async) ? 'over' : 'side'"
+    [opened]="!(isHandset$ | async)">
+    <mat-toolbar class="tall" color="primary">
+      <mat-toolbar-row class="avatar">
+        <ngx-avatar name="Admin" size="64"></ngx-avatar>
+      </mat-toolbar-row>
+      <mat-toolbar-row>
+        <span class="mat-body-2">{{userName}}</span>
+      </mat-toolbar-row>
+      <mat-toolbar-row>
+        <span class="mat-body-1">{{department}}</span>
+      </mat-toolbar-row>
+    </mat-toolbar>
+    <mat-nav-list>
+      <a mat-list-item routerLink="dashboard" role="navigation" (click)="drawerToggle()">
+        <mat-icon matListIcon>dashboard</mat-icon><span class="mat-body-2">Dashboard</span>
+      </a>
+      <a mat-list-item routerLink="stats" role="navigation" (click)="drawerToggle()">
+        <mat-icon matListIcon>trending_up</mat-icon><span class="mat-body-2">Statistics</span>
+      </a>
+      <a mat-list-item routerLink="reports" role="navigation" (click)="drawerToggle()">
+        <mat-icon matListIcon>picture_as_pdf</mat-icon><span class="mat-body-2">Reports</span>
+      </a>
+      <a mat-list-item routerLink="contact" role="navigation" (click)="drawerToggle()">
+        <mat-icon matListIcon>contact_support</mat-icon><span class="mat-body-2">Contact Us</span>
+      </a>
+    </mat-nav-list>
+    <mat-nav-list class="bottom">
+      <a mat-list-item class="mat-body-2" routerLink="login" role="navigation" (click)="drawerToggle();">
+        <mat-icon matListIcon>power_settings_new</mat-icon><span class="mat-body-2">Logout</span>
+      </a>
+    </mat-nav-list>
+  </mat-sidenav>
+  <mat-sidenav-content>
+    <mat-toolbar color="primary" [hidden]="isLogin()" *ngIf="!isLogin()">
+      <button type="button" aria-label="Toggle sidenav" mat-icon-button (click)="drawer.toggle()"
+        *ngIf="isHandset$ | async">
+        <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
+      </button>
+      <div class="title">
+        <span class="titleText">Prolysis</span>
+      </div>
+    </mat-toolbar>
+    <router-outlet></router-outlet>
+  </mat-sidenav-content>
+</mat-sidenav-container>

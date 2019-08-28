@@ -1,0 +1,38 @@
+<div class="body-container">
+  <mat-card>
+    <mat-card-content>
+      <div class="head">
+        <ngx-avatar [name]="candidate.name" size="125" class="mx-auto"></ngx-avatar>
+        <div class="detailCandi mx-2 my-2">
+          <h2 align="center">{{candidate.name}}</h2>
+          <h3 align="center">ID: {{candidate.id}}</h3>
+          <h4 align="center">{{candidate.email}}</h4>
+        </div>
+      </div>
+      <div class="mt-5 mb-md-5 mb-sm-2 px-md-5 px-sm-2 d-flex flex-wrap justify-content-around">
+        <div *ngFor="let prob of problemsArray" class="d-flex m-md-2">
+          <div class="d-flex flex-wrap">
+            <div class="h5 d-flex">
+              Problem {{prob.pID}}:
+            </div>
+            <p class="d-flex" style="font-size: 1rem;padding-left: 10px;">{{prob.passT}}/{{prob.totalT}} Test Cases
+              <br>
+              No. of attempts: {{[prob.attempts]}}
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="mt-2 mb-5">
+        <h4>
+          Performance Charts
+        </h4>
+        <div class="chartContainer my-5">
+          <div class="chart" *ngFor="let lc of lineChartData; index as i">
+            <canvas baseChart [(datasets)]="lc" [labels]="lineChartLabelsArray[i]" [options]="chartOptionsArray[i]"
+              [chartType]="'line'"></canvas>
+          </div>
+        </div>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>
