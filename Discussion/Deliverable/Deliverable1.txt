@@ -1,0 +1,21 @@
+Deliverable 1 (Graphs)
+
+Displaying all the usernames in a given contestID (as requested by Swati)
+Click on the username
+    - Open Profile (ID, Name, Email ID)
+    - Graphs = Problem(Test cases(Exec Time vs Time)) x2
+
+1. GET contestID /localhost/Scene1/contestID
+2. Response:
+    [{"uName":"Dhaval","uID":123},{"uName":"Bharat","uID":12}...]
+3. GET uID /localhost/Scene1/contestID/uID
+4. Response:
+    {"uName":"Dhaval","contestID":1,"uID":12,"cEmail":"abc@xyz.com","data":[]}
+
+timetaken=-1 which means user was not able to complete that testCase
+
+Executetimetaken:
+i will make each and every entry to database for each pid for each testID when making a entry into the table
+if  there is no entry for a  particular pID then all -1 in exeTest at response
+
+https://localhost:1000/Scene1/2/123

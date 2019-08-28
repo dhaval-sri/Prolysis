@@ -1,0 +1,54 @@
+{
+    "uName": "Dhaval",
+    "contestID": 1,
+    "uID": 12,
+    "uEmail": "dhaval@teksystems.com",
+    "data": [
+        {
+            "GraphID": 1,
+            "x": "Time",
+            "y": "Exec Time",
+            "data": [
+                [ // Time t
+                    1, //Test case 1
+                    2, //Test case 2
+                    1, //Test case 3
+                    -1 //Test case 4
+                ],
+                [ // Time t+1
+                    1,
+                    2,
+                    3,
+                    4
+                ]
+            ],
+            "timeTakenToSubmit": [ // the values of 't' in minutes, taken to attempt and submit the code for execution
+                20,
+                30
+            ]
+        },
+        {
+            "GraphID": 2,
+            "x": "Time",
+            "y": "Exec Time",
+            "data": [
+                [
+                    5,
+                    4,
+                    3,
+                    2
+                ],
+                [
+                    1,
+                    0,
+                    -1,
+                    -1
+                ]
+            ],
+            "timeTakenToSubmit": [
+                20,
+                50
+            ]
+        }
+    ]
+}
