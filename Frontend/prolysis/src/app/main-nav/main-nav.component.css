@@ -1,0 +1,51 @@
+.sidenav-container {
+  height: 100%;
+}
+
+.sidenav {
+  width: 200px;
+}
+
+.bottom {
+  display: flex;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  position: absolute;
+  margin-bottom: 2vh;
+}
+
+.mat-toolbar.mat-primary {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
+
+.tall {
+  padding: 15px;
+}
+
+.mat-toolbar-row {
+  height: fit-content;
+  padding: 0;
+}
+
+.avatar {
+  padding-bottom: 10px;
+}
+
+.title {
+  display: flex;
+  flex: 1;
+}
+
+@media only screen and (max-width: 960px) {
+  .title {
+    display: flex;
+    padding-right: 40px;
+  }
+}
+
+.titleText {
+  margin: auto;
+}

@@ -1,0 +1,47 @@
+.body-container {
+    display: flex;
+    justify-content: center;
+}
+
+.mat-card {
+    margin-top: 20px;
+    flex-grow: 1;
+    display: flex;
+    max-width: 90%;
+}
+
+.mat-card-content {
+    display: flex;
+    flex-grow: 1;
+    flex-direction: column;
+}
+
+.head {
+    display: flex;
+    flex-grow: 1;
+    flex-wrap: wrap;
+}
+
+.detailCandi {
+    display: flex;
+    flex-grow: 1;
+    flex-direction: column;
+    justify-content: center;
+    border: 2px solid rgba(0, 0, 0, .2);
+    border-radius: 10px;
+}
+
+.chartContainer {
+    display: flex;
+    justify-content: space-evenly;
+    flex-wrap: wrap;
+}
+
+.spinner-div {
+    position: absolute;
+    top: 64px;
+    bottom: 0;
+    width: 100%;
+    display: flex;
+    flex: 1;
+}
