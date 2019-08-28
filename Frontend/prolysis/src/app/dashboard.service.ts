@@ -14,11 +14,11 @@ export class DashboardService {
   constructor(private httpClient: HttpClient) { }
 
   getContestants(id: number): Observable<Candidate[]> {
-    return this.httpClient.get<Candidate[]>(this.apiURL + '/comments');
+    return this.httpClient.get<Candidate[]>(this.apiURL + '/Scene1/' + id);
   }
 
   getContests(): Observable<Contest[]> {
-    return this.httpClient.get<Contest[]>(this.apiURL + '/posts');
+    return this.httpClient.get<Contest[]>(this.apiURL + '/listOfContest');
   }
 
 }

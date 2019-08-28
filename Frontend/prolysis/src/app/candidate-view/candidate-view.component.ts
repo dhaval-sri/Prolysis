@@ -48,6 +48,7 @@ export class CandidateViewComponent implements OnInit {
   //   };
   serverResponse: ServerResponse;
   loading = true;
+  cID: number;
   problemsArray: Problem[] = [];
   lineChartData: ChartDataSets[][] = [];
   pointsArray: number[][][] = [];
@@ -135,7 +136,7 @@ export class CandidateViewComponent implements OnInit {
   }
 
   fetchCandiDetails(id: number) {
-    this.cService.getCandidateInfo().subscribe((data) => {
+    this.cService.getCandidateInfo(id,this.cID).subscribe((data) => {
       this.serverResponse = data;
       // this.candidate = { name: 'Dhaval', id, email: 'dhaval@tek.com' };
       this.candidate = { uName: this.serverResponse.uName, uID: id, uEmail: this.serverResponse.uEmail };
@@ -202,6 +203,7 @@ export class CandidateViewComponent implements OnInit {
 
   ngOnInit() {
     this.candidate.uID = +this.route.snapshot.paramMap.get('uid');
+    this.cID = +this.route.snapshot.paramMap.get('cid');
     this.fetchCandiDetails(this.candidate.uID);
   }
 }
