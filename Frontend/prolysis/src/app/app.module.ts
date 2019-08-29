@@ -13,13 +13,15 @@ import { AvatarModule } from 'ngx-avatar';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { CandidateViewComponent } from './candidate-view/candidate-view.component';
 import { ChartsModule } from 'ng2-charts';
+import { ProblemViewComponent } from './problem-view/problem-view.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     DashboardComponent,
     MainNavComponent,
-    CandidateViewComponent
+    CandidateViewComponent,
+    ProblemViewComponent
   ],
   imports: [
     BrowserModule,

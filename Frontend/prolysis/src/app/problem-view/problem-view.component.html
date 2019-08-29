@@ -1,0 +1,38 @@
+<div class="spinner-div" *ngIf="loading">
+  <div class="inner-spinner-div" *ngIf="!showRetry">
+    <mat-spinner>
+    </mat-spinner>
+  </div>
+</div>
+<div class="main-container" *ngIf="!(loading||refreshing)">
+  <div class="header-container alternative">
+    <h1 class="mat-h1">Hello, {{userName}}!</h1>
+    <div class="searchBar">
+      <form class="fullwidthForm">
+        <mat-form-field appearance="outline" style="width: 100%;">
+          <mat-label>Kindly select a Problem</mat-label>
+          <mat-icon matPrefix>search</mat-icon>
+          <input type="text" placeholder="Search" matInput [formControl]="myControl" [matAutocomplete]="auto">
+          <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete" [displayWith]="displayFn">
+            <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
+              {{option.name}}
+            </mat-option>
+          </mat-autocomplete>
+        </mat-form-field>
+      </form>
+      <button mat-fab color="primary" (click)="mainFunction(myControl.value.value)"
+        [disabled]="myControl.value===null">Go</button>
+    </div>
+  </div>
+</div>
+<div class="mt-2 mb-5">
+  <h4>
+    Performance Charts
+  </h4>
+  <div class="chartContainer my-5">
+    <div class="chart" *ngFor="let lc of lineChartData; index as i">
+      <canvas baseChart [(datasets)]="lc" [labels]="lineChartLabelsArray[i]" [options]="chartOptionsArray[i]" width="400" height="400"
+        [chartType]="'line'"></canvas>
+    </div>
+  </div>
+</div>
