@@ -2,8 +2,11 @@ var express = require("express");
 var bodyParser = require("body-parser");
 var mongoose = require("mongoose");
 var app = express();
+var cors = require('cors')
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
+app.use(cors());
+
 
 
 const port = 3000;
@@ -32,7 +35,7 @@ app.get("/Scene1/:contestID", function (req, res) {
         else {
             var len = data.length;
             if (len == 0) {
-                res.send("ContestID Does not Exist");
+                res.send([]);
             }
             else {
                 var arr = [];
@@ -172,12 +175,12 @@ app.post("/TimeTaken/:uID/:cID/:pID", async function (req, res) {
         var uID = req.params.uID;
         var cID = req.params.cID;
         var pID = req.params.pID;
-        var i,j;
-        var date=Date.now();
+        var i, j;
+        var date = Date.now();
         if (key == "1122") {
             var h = req.rawHeaders, i, test = -1, count = 0;
             // console.log(h);
-            var arr = [], isnum, val,isnum1,val1;
+            var arr = [], isnum, val, isnum1, val1;
             for (i = 0; i < h.length; i++) {
                 if (h[i] == 'done') {
                     test = 0;
@@ -189,14 +192,14 @@ app.post("/TimeTaken/:uID/:cID/:pID", async function (req, res) {
                     val1 = h[i].toString();
                     isnum1 = /^\d+$/.test(val1);
                     // console.log(parseInt(val));
-                    if (val!="-1"&&!isnum) {
+                    if (val != "-1" && !isnum) {
                         return res.send("something wrong in header");
                     }
-                    if (val1!="-1"&&!isnum1) {
+                    if (val1 != "-1" && !isnum1) {
                         return res.send("something wrong in header");
                     }
-                    if(val==null) return res.send("something wrong in header");
-                    if(val1==null) return res.send("something wrong in header");
+                    if (val == null) return res.send("something wrong in header");
+                    if (val1 == null) return res.send("something wrong in header");
                     arr.push({ testID: h[i - 1], timeTaken: h[i] });
                 }
                 count++;
@@ -208,7 +211,7 @@ app.post("/TimeTaken/:uID/:cID/:pID", async function (req, res) {
                 return res.send("something wrong in header");
             }
             // console.log(arr);
-            if(arr.length == 0) return res.send("something wrong in header");
+            if (arr.length == 0) return res.send("something wrong in header");
             let data;
             try {
                 data = await User.find({ uID: uID });
@@ -244,64 +247,64 @@ app.post("/TimeTaken/:uID/:cID/:pID", async function (req, res) {
                 return res.send("user not registered in this contest");
             }
             try {
-                for(i=0;i<arr.length;i++){
+                for (i = 0; i < arr.length; i++) {
                     let data1;
-                    try{
-                        data1=await Problem.find({pID:pID,testID:arr[i].testID});
-                    }catch(err){
+                    try {
+                        data1 = await Problem.find({ pID: pID, testID: arr[i].testID });
+                    } catch (err) {
                         return res.send("Some Error in database problem-test checking");
                     }
-                    if(data1.length==0) return res.send("TestId not found in problem ");
+                    if (data1.length == 0) return res.send("TestId not found in problem ");
                 }
             } catch (err) {
                 return res.send("not okay at problem and test" + err);
             }
             //extract the attemptNo from TimeTaken
-            try{
-                data=await TimeTaken.find({uID:uID,cID:cID,pID:pID});
-            }catch(err){
-                return res.send("Error in extratcting attemptNo."+err);
+            try {
+                data = await TimeTaken.find({ uID: uID, cID: cID, pID: pID });
+            } catch (err) {
+                return res.send("Error in extratcting attemptNo." + err);
             }
-            var attemptNo=0,max=-1;
-            if(data.length==0)attemptNo=1;
-            else{
-                for ( i = 0; i < data.length; i++) {
+            var attemptNo = 0, max = -1;
+            if (data.length == 0) attemptNo = 1;
+            else {
+                for (i = 0; i < data.length; i++) {
                     if (data[i].attemptNo > max) max = data[i].attemptNo;
                 }
-                attemptNo=max+1;
+                attemptNo = max + 1;
             }
-            try{
-                if(noOfTestCases==0)return res.send("TestCase Zero in Database");
+            try {
+                if (noOfTestCases == 0) return res.send("TestCase Zero in Database");
                 data = await Problem.find({ pID: pID });
                 console.log(data)
                 var check;
                 let insertData;
-                
-                for(i=0;i<data.length;i++){
-                    check=-1;
-                    for(j=0;j<arr.length;j++){
-                        if(arr[j].testID==data[i].testID){
+
+                for (i = 0; i < data.length; i++) {
+                    check = -1;
+                    for (j = 0; j < arr.length; j++) {
+                        if (arr[j].testID == data[i].testID) {
                             // console.log("Yes");
-                            try{
-                                insertData=await TimeTaken.create({uID:uID,pID:pID,cID:cID,testID:data[i].testID,clockTime:date,attemptNo:attemptNo,timeTaken:arr[j].timeTaken});
-                            }catch(err){
-                                return res.send("Some Error in DataBase"+err);
+                            try {
+                                insertData = await TimeTaken.create({ uID: uID, pID: pID, cID: cID, testID: data[i].testID, clockTime: date, attemptNo: attemptNo, timeTaken: arr[j].timeTaken });
+                            } catch (err) {
+                                return res.send("Some Error in DataBase" + err);
                             }
-                            check=0;
+                            check = 0;
                             break;
                         }
                     }
-                    if(check==-1){
+                    if (check == -1) {
                         // console.log("no");
-                        try{
-                            insertData=await TimeTaken.create({uID:uID,pID:pID,cID:cID,testID:data[i].testID,clockTime:date,attemptNo:attemptNo,timeTaken:-1});
-                        }catch(err){
-                           return  res.send("Some Error in DataBase"+err);
+                        try {
+                            insertData = await TimeTaken.create({ uID: uID, pID: pID, cID: cID, testID: data[i].testID, clockTime: date, attemptNo: attemptNo, timeTaken: -1 });
+                        } catch (err) {
+                            return res.send("Some Error in DataBase" + err);
                         }
                     }
                 }
                 console.log(arr);
-            }catch(err){
+            } catch (err) {
                 return res.send("not okay at insertion" + err);
             }
             // if (data.length == 0) {
@@ -322,7 +325,82 @@ app.post("/TimeTaken/:uID/:cID/:pID", async function (req, res) {
         console.log(err);
     }
 });
+app.get("/listOfContest", async function (req, res) {
+    try {
+        let data;
+        data = await Contest.find({});
+        console.log(data);
+        var i, arr = [];
+        for (i = 0; i < data.length; i++) {
+            arr.push({ name: data[i].cName, id: data[i].cID });
+        }
+        return res.send(arr);
+    } catch (err) {
+        return res.send("Something Wrong in function " + err);
+    }
+});
+app.get("/listOfProblem", async function (req, res) {
+    try {
+        let data;
+        data = await Problem.distinct("pID");
+        console.log(data);
+        return res.send({ "pID": data });
+    } catch (err) {
+        return res.send("Something Wrong in function " + err);
+    }
+});
 
+/**below code is a part of 2nd diliverable code */
+// app.get("/AllProgrammerData/:pID", async function (req, res) {
+//     try {
+//         var pID = req.params.pID;
+//         let prob, user;
+//         try {
+//             prob = await Problem.find({ pID: pID });
+//         } catch (err) {
+//             return res.send("Something Wrong in DataBase" + err);
+//         }
+//         if (prob.length == 0) return res.send("This pID Does not Exist");
+//         try {
+//             user = await User.find({});
+//         } catch (err) {
+//             return res.send("Something Wrong in DataBase " + err);
+//         }
+//         if (user.length == 0) return res.send([]);
+//         var i, j, k, jsondata = [];
+//         // console.log(user);
+//         for (i = 0; i < user.length; i++) {
+//             let contestAttemp;
+//             try {
+//                 contestAttemp = await TimeTaken.find({ pID: pID, uID: user[i].uID }).distinct("cID");
+//             } catch (err) {
+//                 return res.send("Some Error in database" + err);
+//             }
+//             if (contestAttemp.length == 0) continue;
+//             // console.log(contestAttemp);
+//             var perUserInfo = {};
+//             perUserInfo.uName = user[i].uName;
+//             perUserInfo.uID = user[i].uID;
+//             let perConstestProblems;
+//             for (j = 0; j < contestAttemp.length; j++) {
+//                 try {
+//                     perConstestProblems = await ContestProblem.find({ cID: contestAttemp[j] }).distinct("pID");
+//                 } catch (err) {
+//                     return res.send("Some Error in database" + err);
+//                 } if (perConstestProblems.length == 0) return res.send("No Problems in Contest");
+//                 for (k = 0; k < perConstestProblems.length; k++) {
+                     
+//                 }
+//             }
+//             jsondata.push(perUserInfo);
+//         }
+//         return res.send(jsondata);
+//     } catch (err) {
+//         return res.send("Something Wrong in function " + err);
+//     }
+// });
 app.listen(port, process.env.IP, function () {
     console.log("Server Started...... ");
 });
+
+
