@@ -7,7 +7,7 @@ import { ServerResponse } from '../response';
 import regression from 'regression';
 import { CandidateService } from '../candidate.service';
 
-interface Problem {
+export interface Problem {
   pID: number;
   passT: number;
   totalT: number;
@@ -136,7 +136,7 @@ export class CandidateViewComponent implements OnInit {
   }
 
   fetchCandiDetails(id: number) {
-    this.cService.getCandidateInfo(id,this.cID).subscribe((data) => {
+    this.cService.getCandidateInfo(id, this.cID).subscribe((data) => {
       this.serverResponse = data;
       // this.candidate = { name: 'Dhaval', id, email: 'dhaval@tek.com' };
       this.candidate = { uName: this.serverResponse.uName, uID: id, uEmail: this.serverResponse.uEmail };

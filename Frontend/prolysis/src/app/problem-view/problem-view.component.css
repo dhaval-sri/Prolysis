@@ -1,0 +1,90 @@
+.header-container {
+    display: flex;
+    flex-direction: column;
+}
+
+.mat-h1 {
+    display: flex;
+    margin: auto;
+    flex: 1;
+}
+
+.searchBar {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-top: 3vh;
+}
+
+.fullwidthForm {
+    display: flex;
+    padding-right: 5px;
+    flex-grow: 3;
+}
+
+.body-container {
+    margin-top: 5%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+
+@media only screen and (max-width: 425px) {
+    .timer-big {
+        font-size: 30px;
+    }
+    .main-container {
+        margin-top: 2.5vh;
+        margin-left: 8px;
+        margin-right: 8px;
+        margin-bottom: 8px;
+    }
+}
+
+@media only screen and (min-width: 992px) {
+    .main-container {
+        margin-top: 2vh;
+        margin-left: 15%;
+        margin-right: 15%
+    }
+}
+
+.intersection-container {
+    margin-top: 25px;
+}
+
+.mat-card {
+    margin-bottom: 5px;
+}
+
+.mat-card-title {
+    margin-bottom: 0px !important;
+}
+
+.mat-card-content {
+    padding-left: 56px;
+}
+
+.inner-spinner-div {
+    margin: auto;
+}
+
+.spinner-div {
+    position: absolute;
+    top: 64px;
+    bottom: 0;
+    width: 100%;
+    display: flex;
+    flex: 1;
+}
+
+@media only screen and (max-width: 425px) {
+    .spinner-div {
+        top: 54px;
+    }
+}
+
+a:hover {
+    text-decoration: none !important;
+}
