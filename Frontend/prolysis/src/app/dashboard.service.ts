@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Candidate } from './candidates';
 import { Contest } from './contests';
+import { ServerResponse2 } from './serverResponse2';
 
 @Injectable({
   providedIn: 'root'
@@ -19,6 +20,14 @@ export class DashboardService {
 
   getContests(): Observable<Contest[]> {
     return this.httpClient.get<Contest[]>(this.apiURL + '/listOfContest');
+  }
+
+  getProblems(): Observable<{ pID: number[] }> {
+    return this.httpClient.get<{ pID: number[] }>(this.apiURL + '/posts');
+  }
+
+  getAllChartData(pID: number): Observable<ServerResponse2> {
+    return this.httpClient.get<ServerResponse2>((this.apiURL + '/profile'));
   }
 
 }
